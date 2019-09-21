@@ -1,0 +1,29 @@
+/* Universal Selector */
+
+* {
+    color:grey;
+}
+
+/* typed selector */
+
+h1 {
+    color:teal;
+}
+
+/* class selector */
+
+.para {
+    color:gold;
+}
+
+.bgcolor {
+    background-color: grey;
+}
+
+
+/* id selector */
+
+#firstPara {
+    color: violet;
+}
+

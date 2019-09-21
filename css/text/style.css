@@ -1,0 +1,19 @@
+* {
+    font-family: 'Roboto Slab', serif;
+}
+
+h1 {
+    font-weight: 400; /* 100 - 900, bold, bolder*/
+    font-size: 20px; 
+}
+
+p {
+    font-weight: 300;
+    font-size: 18px;
+    line-height: 30px;
+    word-spacing: 10px;
+    letter-spacing: 3px;
+    text-indent: 30px;
+    text-align: justify;/* left right center*/
+    text-decoration: none;/*underline line-through*/
+}
