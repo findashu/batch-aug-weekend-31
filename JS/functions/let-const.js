@@ -20,12 +20,11 @@ console.log(obj);
 
 
 if(true) {
-
     let b = 20;
     console.log(b);
 }
 
-// console.log('Outside ',b)
+console.log('Outside ',b)
 
 var x = 10;
 
