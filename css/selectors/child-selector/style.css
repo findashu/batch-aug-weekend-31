@@ -1,0 +1,7 @@
+.container > p {
+    color:lightcoral;
+}
+
+.container .innerDiv > p {
+    color:red;
+}

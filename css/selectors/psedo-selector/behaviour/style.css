@@ -1,0 +1,18 @@
+/* 
+active,
+hover,
+visited
+
+*/
+
+a:hover {
+    color:red;
+}
+
+a:active {
+    color:green;
+}
+
+a:visited {
+    color:gold;
+}
