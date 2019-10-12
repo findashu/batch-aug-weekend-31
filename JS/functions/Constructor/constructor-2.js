@@ -36,10 +36,6 @@ console.log(Object.hasOwnProperty('toString'));
 console.log(Object.constructor.prototype.hasOwnProperty('toString'));
 
 
-
-
-
-
 let n = watch.toString(10);
 
 console.log(n);
