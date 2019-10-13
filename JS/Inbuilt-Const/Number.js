@@ -23,10 +23,19 @@ console.log(bool);
 // Error
 // Global Methods
 // ES6 Features
+    // let and const
+    // Fat arrow
+    // String literal
+    // Object Literal
     // Destructuring (obj and arr)
     // REST and SPREAD operator
     // class
 
-// Callback
-// Promises
-// Async Await
+// Callback ==> Browser side (Node)
+    // Error First callback
+    // Callback Hell
+
+// Promises ==> fetch API ==> promise
+
+
+// Async Await ===> API 
