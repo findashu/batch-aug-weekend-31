@@ -1,0 +1,14 @@
+media-type and (media-feature)s
+
+screen      width
+print       height
+handheld    min-width
+tv          min-height
+projector   max-width
+all         max-height
+
+
+
+@media screen and (max-width:400px) {
+    
+}

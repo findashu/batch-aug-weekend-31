@@ -21,3 +21,17 @@ a {
     text-decoration: none;
     color: white;
 }
+
+.nav li.hamburger {
+    display: none;
+}
+
+@media all and (min-width:400px) and (max-width:600px) {
+    .nav li.hamburger {
+        display: inline;
+    }
+
+    .nav .toggle {
+        
+    }
+}
