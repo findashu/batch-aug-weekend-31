@@ -1,5 +1,6 @@
 const express = require('express');
 const hbs = require('hbs');
+const session = require('express-session');
 const middlewares = require('./middlewares/appMiddleware');
 const routes = require('./routes/index')
 const app = express();
@@ -10,7 +11,17 @@ app.set('view engine', 'hbs');
 hbs.registerPartials(__dirname+'/views/partials')
 
 
-app.use(middlewares.logger)
+app.use(middlewares.logger);
+
+app.use(session({
+    secret: 'myappsupersecret',
+    saveUninitialized: false,
+    resave: false,
+    cookie:{maxAge: 10000000}
+}))
+
+
+
 app.use(express.static(__dirname+'/static'))
 app.use(express.json());
 app.use(express.urlencoded({extended:false}));
@@ -22,8 +33,15 @@ app.get('/blogs', routes.blogList);
 app.get('/project-detail', routes.projectDetail);
 app.get('/contact', routes.contact);
 app.post('/contact', routes.doContact);
+app.get('/admin',  middlewares.authenticate,   routes.admin);
 
 app.get('/signin', routes.signin);
+
+app.post('/signin', routes.doSignin);
+
+app.get('/signup', routes.signup);
+
+app.post('/signup', routes.doSignup);
 
 
 
