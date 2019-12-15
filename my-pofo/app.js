@@ -30,7 +30,6 @@ app.use(express.urlencoded({extended:false}));
 app.get('/' , routes.index);
 app.get('/projects', routes.projectList);
 app.get('/blogs', routes.blogList);
-app.get('/project-detail', routes.projectDetail);
 app.get('/contact', routes.contact);
 app.post('/contact', routes.doContact);
 app.get('/admin',  middlewares.authenticate,   routes.admin);
@@ -42,6 +41,12 @@ app.post('/signin', routes.doSignin);
 app.get('/signup', routes.signup);
 
 app.post('/signup', routes.doSignup);
+
+app.get('/admin/projects', middlewares.authenticate, routes.adminProjectList)
+
+app.get('/project/:alias', routes.projectDetail);
+app.get('/blog/:alias', routes.blogDetail);
+
 
 
 

@@ -1,9 +1,7 @@
+const data = require('../mydata').data;
+
 module.exports.index = function(req,res) {
-
-    console.log(req.session);
-
-
-
+    // console.log(req.session);
     res.render('index',{
         title: 'My Portfolio - Ashutosh Mishra',
         navHome: true
@@ -11,23 +9,45 @@ module.exports.index = function(req,res) {
 }
 
 module.exports.projectList = (req,res) => {
+
+    // console.log(data.myProjects);
+
     res.render('projectList', {
         title: 'Projects',
+        projects: data.myProjects,
         navProject: true
     })
 }
 
 
 module.exports.blogList = (req,res) => {
+
+    let random = parseInt(Math.random()*data.myBlog.length)
+    console.log(random)
     res.render('blog', {
         title: 'Blog List',
-        navBlog: true
+        navBlog: true,
+        blogs: data.myBlog,
+        blogCategory: data.blogCategories,
+        featuredBlog: data.myBlog[random]
     })
 }
 
 module.exports.projectDetail = (req,res) => {
+
+    let alias = req.params.alias;
+    // req.body.email
+
+    let project = data.myProjects.filter(ele => ele.alias == alias)[0]
+
+    // console.log(project)
+    // data.myProjects
+
+    console.log('my alias',alias);
+
     res.render('projectDetail', {
-        title: 'Project Detail'
+        title: project.name,
+        project: project
     })
 }
 
@@ -69,8 +89,9 @@ module.exports.doSignup = (req,res) => {
 
 
 module.exports.admin = (req,res) => {
-    res.render('admin', {
-        title:'Admin'
+    res.render('admin/admin', {
+        title:'Admin',
+        layout:'admin-layout'
     })
 }
 
@@ -120,4 +141,23 @@ module.exports.doSignin = (req,res) => {
             message: 'Email/Password Incorrect'
         })
     }
+}
+
+module.exports.blogDetail = (req,res) => {
+    let alias = req.params.alias;
+    let blog = data.myBlog.filter(ele => ele.alias == alias)[0];
+
+
+    res.render('blogDetail', {
+        title: blog.name,
+        blog: blog
+    })
+}
+
+module.exports.adminProjectList = (req,res) => {
+    res.render('admin/projects', {
+        title: 'Project List',
+        layout:'admin-layout',
+        projects: data.myProjects
+    })
 }
