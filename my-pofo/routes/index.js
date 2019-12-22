@@ -161,3 +161,23 @@ module.exports.adminProjectList = (req,res) => {
         projects: data.myProjects
     })
 }
+
+module.exports.adminProjectDetail = (req,res) => {
+
+    let alias = req.params.alias;
+
+    // console.log(alias);
+    let project = data.myProjects.filter(ele => ele.alias == alias)[0]
+
+    res.render('admin/projectDetail', {
+        title: 'Project Detail',
+        layout:'admin-layout',
+        project: project
+    })
+}
+
+module.exports.signout = (req,res) => {
+    req.session.isLoggedIn = false;
+    req.session.user = {};
+    res.redirect('/');
+}

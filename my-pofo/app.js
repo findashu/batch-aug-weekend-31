@@ -18,7 +18,10 @@ app.use(session({
     saveUninitialized: false,
     resave: false,
     cookie:{maxAge: 10000000}
-}))
+}));
+
+
+app.use(middlewares.authenticated);
 
 
 
@@ -39,6 +42,7 @@ app.get('/signin', routes.signin);
 app.post('/signin', routes.doSignin);
 
 app.get('/signup', routes.signup);
+app.get('/signout', routes.signout);
 
 app.post('/signup', routes.doSignup);
 
@@ -46,6 +50,8 @@ app.get('/admin/projects', middlewares.authenticate, routes.adminProjectList)
 
 app.get('/project/:alias', routes.projectDetail);
 app.get('/blog/:alias', routes.blogDetail);
+
+app.get('/admin/project/:alias', middlewares.authenticate, routes.adminProjectDetail)
 
 
 
