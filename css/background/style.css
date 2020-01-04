@@ -1,9 +1,0 @@
-.bg {
-    background-color: teal;
-}
-
-.bgImg {
-    background-image: url('../../media/ashu.jpeg');
-    background-repeat: no-repeat;/*repeat-x repeat-y */
-    background-position: right center;
-}
