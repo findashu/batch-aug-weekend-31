@@ -1,5 +1,24 @@
 const data = require('../mydata').data;
 
+const mongoClient = require('mongodb').MongoClient;
+
+
+let db;
+
+mongoClient.connect('mongodb://localhost:27017',{useNewUrlParser:true,useUnifiedTopology:true },function(err,client) {
+
+    if(err) {
+        console.log('DB Connection Err', err)
+    }else{
+        console.log('MongoDB Connected')
+        db = client.db('aug-pofo');
+    }
+});
+
+
+
+
+
 module.exports.index = function(req,res) {
     // console.log(req.session);
     res.render('index',{
@@ -155,29 +174,80 @@ module.exports.blogDetail = (req,res) => {
 }
 
 module.exports.adminProjectList = (req,res) => {
-    res.render('admin/projects', {
-        title: 'Project List',
-        layout:'admin-layout',
-        projects: data.myProjects
+    
+    let projectCollection = db.collection('projects');
+    projectCollection.find().toArray(function(err,data) {
+        if(err) {
+            console.log(err)
+        }else {
+            console.log('Data from db',data);
+            res.render('admin/projects', {
+                title: 'Project List',
+                layout:'admin-layout',
+                projects: data
+            })
+        }
     })
+
+
+    
 }
 
-module.exports.adminProjectDetail = (req,res) => {
+module.exports.adminProjectDetail = (req,res,next) => {
 
     let alias = req.params.alias;
+
+    let projectCollection = db.collection('projects');
+
+    projectCollection.find({alias:alias}).toArray(function(err,data) {
+        if(err) {
+            next(err)
+        }else {
+            console.log(data)
+            res.render('admin/projectDetail', {
+                title: 'Project Detail',
+                layout:'admin-layout',
+                project: data[0]
+            })
+        }
+    })
 
     // console.log(alias);
     let project = data.myProjects.filter(ele => ele.alias == alias)[0]
 
-    res.render('admin/projectDetail', {
-        title: 'Project Detail',
-        layout:'admin-layout',
-        project: project
-    })
+    
 }
 
 module.exports.signout = (req,res) => {
     req.session.isLoggedIn = false;
     req.session.user = {};
     res.redirect('/');
+}
+
+
+module.exports.createNewProject = (req,res) => {
+    res.render('admin/newProject', {
+        title: 'Create New Project',
+        layout:'admin-layout',
+    })
+}
+
+module.exports.doCreateNewProject = (req,res,next) => {
+    let bodyData = req.body;
+    bodyData.alias = bodyData.name.split(' ').join('-').toLowerCase();
+
+
+    console.log(bodyData);
+    let projectCollection = db.collection('projects');
+
+    projectCollection.insert(bodyData, function(err, data) {
+
+        if(err) {
+            console.log(err);
+            next(err)
+        }else {
+            console.log('data',data)
+            res.redirect('/admin/projects');
+        }
+    })
 }

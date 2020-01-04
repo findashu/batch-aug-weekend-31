@@ -38,18 +38,17 @@ app.post('/contact', routes.doContact);
 app.get('/admin',  middlewares.authenticate,   routes.admin);
 
 app.get('/signin', routes.signin);
-
 app.post('/signin', routes.doSignin);
-
 app.get('/signup', routes.signup);
 app.get('/signout', routes.signout);
-
 app.post('/signup', routes.doSignup);
-
 app.get('/admin/projects', middlewares.authenticate, routes.adminProjectList)
 
 app.get('/project/:alias', routes.projectDetail);
 app.get('/blog/:alias', routes.blogDetail);
+
+app.get('/admin/project/create-new',middlewares.authenticate,routes.createNewProject )
+app.post('/admin/project/create-new',middlewares.authenticate,routes.doCreateNewProject )
 
 app.get('/admin/project/:alias', middlewares.authenticate, routes.adminProjectDetail)
 
