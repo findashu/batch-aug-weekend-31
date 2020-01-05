@@ -1,7 +1,18 @@
 const data = require('../mydata').data;
-
+const router = require('express').Router();
 const mongoClient = require('mongodb').MongoClient;
-
+const users = [
+    {
+        name:'Test User',
+        email:"test@test.com",
+        password:'test1234'
+    },
+    {
+        name:'User',
+        email:"testuser@test.com",
+        password:'test123456'
+    }
+]
 
 let db;
 
@@ -19,117 +30,54 @@ mongoClient.connect('mongodb://localhost:27017',{useNewUrlParser:true,useUnified
 
 
 
-module.exports.index = function(req,res) {
+router.get('/',function(req,res) {
     // console.log(req.session);
     res.render('index',{
         title: 'My Portfolio - Ashutosh Mishra',
         navHome: true
     })
-}
-
-module.exports.projectList = (req,res) => {
-
-    // console.log(data.myProjects);
-
-    res.render('projectList', {
-        title: 'Projects',
-        projects: data.myProjects,
-        navProject: true
-    })
-}
+});
 
 
-module.exports.blogList = (req,res) => {
-
-    let random = parseInt(Math.random()*data.myBlog.length)
-    console.log(random)
-    res.render('blog', {
-        title: 'Blog List',
-        navBlog: true,
-        blogs: data.myBlog,
-        blogCategory: data.blogCategories,
-        featuredBlog: data.myBlog[random]
-    })
-}
-
-module.exports.projectDetail = (req,res) => {
-
-    let alias = req.params.alias;
-    // req.body.email
-
-    let project = data.myProjects.filter(ele => ele.alias == alias)[0]
-
-    // console.log(project)
-    // data.myProjects
-
-    console.log('my alias',alias);
-
-    res.render('projectDetail', {
-        title: project.name,
-        project: project
-    })
-}
-
-module.exports.contact = (req,res) => {
+router.get('/contact',(req,res) => {
     res.render('contact', {
         title: 'Contact Us',
         navContact: true
     })
-}
+})
 
-module.exports.doContact = (req,res) => {
+
+router.post('/contact', (req,res) => {
     let body = req.body;
     console.log(body);
 
     res.status(201).json({
         message: 'Thanks for Contacting US'
     });
-}
+});
 
-module.exports.signin = (req,res) => {
+router.get('/signin', (req,res) => {
     res.render('signin', {
         title: 'Sign In',
         layout:'layout-signin'
     })
-}
+});
 
-module.exports.signup = (req,res) => {
+router.get('/signup', (req,res) => {
     res.render('signup', {
         title: 'Sign Up',
         layout:'layout-signin'
     })
-}
+});
 
-module.exports.doSignup = (req,res) => {
+
+router.post('/signup',(req,res) => {
     let body = req.body;
     console.log(body);
     res.redirect('/signin');
-}
+})
 
-
-module.exports.admin = (req,res) => {
-    res.render('admin/admin', {
-        title:'Admin',
-        layout:'admin-layout'
-    })
-}
-
-const users = [
-    {
-        name:'Test User',
-        email:"test@test.com",
-        password:'test1234'
-    },
-    {
-        name:'User',
-        email:"testuser@test.com",
-        password:'test123456'
-    }
-]
-
-
-
-module.exports.doSignin = (req,res) => {
+router.post('/signin', (req,res) => {
     let body = req.body;
     console.log(body);
     
@@ -160,7 +108,28 @@ module.exports.doSignin = (req,res) => {
             message: 'Email/Password Incorrect'
         })
     }
+})
+
+router.get('/signout',(req,res) => {
+    req.session.isLoggedIn = false;
+    req.session.user = {};
+    res.redirect('/');
+})
+
+module.exports.blogList = (req,res) => {
+
+    let random = parseInt(Math.random()*data.myBlog.length)
+    console.log(random)
+    res.render('blog', {
+        title: 'Blog List',
+        navBlog: true,
+        blogs: data.myBlog,
+        blogCategory: data.blogCategories,
+        featuredBlog: data.myBlog[random]
+    })
 }
+
+
 
 module.exports.blogDetail = (req,res) => {
     let alias = req.params.alias;
@@ -173,81 +142,5 @@ module.exports.blogDetail = (req,res) => {
     })
 }
 
-module.exports.adminProjectList = (req,res) => {
-    
-    let projectCollection = db.collection('projects');
-    projectCollection.find().toArray(function(err,data) {
-        if(err) {
-            console.log(err)
-        }else {
-            console.log('Data from db',data);
-            res.render('admin/projects', {
-                title: 'Project List',
-                layout:'admin-layout',
-                projects: data
-            })
-        }
-    })
 
-
-    
-}
-
-module.exports.adminProjectDetail = (req,res,next) => {
-
-    let alias = req.params.alias;
-
-    let projectCollection = db.collection('projects');
-
-    projectCollection.find({alias:alias}).toArray(function(err,data) {
-        if(err) {
-            next(err)
-        }else {
-            console.log(data)
-            res.render('admin/projectDetail', {
-                title: 'Project Detail',
-                layout:'admin-layout',
-                project: data[0]
-            })
-        }
-    })
-
-    // console.log(alias);
-    let project = data.myProjects.filter(ele => ele.alias == alias)[0]
-
-    
-}
-
-module.exports.signout = (req,res) => {
-    req.session.isLoggedIn = false;
-    req.session.user = {};
-    res.redirect('/');
-}
-
-
-module.exports.createNewProject = (req,res) => {
-    res.render('admin/newProject', {
-        title: 'Create New Project',
-        layout:'admin-layout',
-    })
-}
-
-module.exports.doCreateNewProject = (req,res,next) => {
-    let bodyData = req.body;
-    bodyData.alias = bodyData.name.split(' ').join('-').toLowerCase();
-
-
-    console.log(bodyData);
-    let projectCollection = db.collection('projects');
-
-    projectCollection.insert(bodyData, function(err, data) {
-
-        if(err) {
-            console.log(err);
-            next(err)
-        }else {
-            console.log('data',data)
-            res.redirect('/admin/projects');
-        }
-    })
-}
+module.exports = router;
