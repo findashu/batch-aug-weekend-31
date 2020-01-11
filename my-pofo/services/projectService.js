@@ -42,3 +42,23 @@ module.exports.createProject = (bd) => {
 
     })
 }
+
+module.exports.updateProject = (alias,data) => {
+    return new Promise((resolve,reject) => {
+        Projects.findOneAndUpdate({alias:alias},{$set:data,$inc:{'__v':1}}).then(dt => {
+            resolve(dt)
+        }).catch(err => reject(err))
+
+    })
+}
+
+
+module.exports.deleteProject = (alias) => {
+
+    return new Promise((resolve,reject) => {
+
+        Projects.findOneAndDelete({alias:alias}).then(dt => {
+            resolve(dt)
+        }).catch(err => reject(err))
+    });
+}

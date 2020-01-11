@@ -29,7 +29,7 @@
 
                 {{#each projects}}
                 <tr>
-                    <td><img src="/images/javascript.png" height="90" width="90"></td>
+                    <td><img src="{{this.image}}" height="90" width="90"></td>
                     <td><a href="/admin/projects/{{this.alias}}">{{this.name}}</a></td>
                     <td><a href="/admin/projects/{{this.alias}}">Alias</a></td>
                     <td><a href="{{this.githubUrl}}">Github</a></td>

@@ -26,10 +26,6 @@ router.get('/', function(req,res,next) {
             navProject: true
         })
     }).catch(err => next(err))
-    
-    
-    
-    
 });
 
 router.get('/:alias', function(req,res,next) {
@@ -47,5 +43,14 @@ router.get('/:alias', function(req,res,next) {
     
 });
 
+
+router.get('/:alias/demo', function(req,res) {
+    let alias = req.params.alias;
+    res.render('demo', {
+        title:'Demo',
+        alias:alias,
+        layout:'layout-signin'
+    })
+})
 
 module.exports = router;
