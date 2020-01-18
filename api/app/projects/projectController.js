@@ -12,6 +12,9 @@ module.exports.getList = (req,res,next) => {
 module.exports.createProject = (req,res,next) => {
 
     let body = req.body;
+
+    console.log(body)
+
     body.alias = body.name.split(' ').join('-').toLowerCase();
     ProjectService.create(body).then(dt => {
         res.status(201).json({'msg':'Project Saved Successfully', data:dt});

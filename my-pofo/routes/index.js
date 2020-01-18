@@ -1,5 +1,9 @@
 const data = require('../mydata').data;
 const router = require('express').Router();
+const rq = require('request');
+const config = require('../config/config')
+
+
 const mongoClient = require('mongodb').MongoClient;
 const users = [
     {
@@ -73,8 +77,25 @@ router.get('/signup', (req,res) => {
 
 router.post('/signup',(req,res) => {
     let body = req.body;
-    console.log(body);
-    res.redirect('/signin');
+
+
+    let createUser = {
+        method:'POST',
+        uri:`${config.apiUrl}/users/signup`,
+        body:body,
+        json:true
+    }
+
+    rq(createUser,function(err,resp,body) {
+        if(err) {
+            console.log(err);
+
+        }else {
+            // console.log(JSON.parse(body))
+            res.redirect('/signin')
+        }
+    })
+
 })
 
 router.post('/signin', (req,res) => {

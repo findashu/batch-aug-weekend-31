@@ -23,6 +23,7 @@ app.get('/', (req,res) => {
 
 
 app.use('/api/projects', require('./app/projects/routes'))
+app.use('/api/users', require('./app/user/userRoutes'));
 
 app.use(appMiddleware.notFound);
 app.use(appMiddleware.handleError);

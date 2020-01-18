@@ -5,6 +5,8 @@ const mongoose = require('mongoose');
 const middlewares = require('./middlewares/appMiddleware');
 const projectRouter = require('./routes/projectRoutes');
 const adminRouter = require('./routes/adminRoutes');
+const config = require('./config/config')
+
 
 const indexRouter = require('./routes/index')
 const app = express();
@@ -47,4 +49,4 @@ app.use('/admin',middlewares.authenticate, adminRouter)
 app.use(middlewares.notFound);
 app.use(middlewares.handleError);
 
-app.listen(3000, () => console.log('App up n running on port 3000'));
+app.listen(config.port, () => console.log('App up n running on port 3000'));

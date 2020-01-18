@@ -51,11 +51,7 @@ router.get('/projects/create-new',function(req,res) {
 
 router.post('/projects/create-new', function(req,res,next) {
     let bodyData = req.body;
-    bodyData.alias = bodyData.name.split(' ').join('-').toLowerCase();
-
     let classes = ['danger','primary','success','info','warning']
-
-
     bodyData.tags = bodyData.tags.split(',').map((ele,i) => {
         return {
             name:ele,
